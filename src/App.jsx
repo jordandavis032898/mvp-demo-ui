@@ -33,14 +33,7 @@ function genId() {
 }
 
 export default function App() {
-  const [user, setUser] = useState(() => {
-    const stored = api.getStoredAuth();
-    if (stored?.token && stored?.user) {
-      api.setAuthToken(stored.token, stored.user);
-      return stored.user;
-    }
-    return null;
-  });
+  const [user, setUser] = useState({ user_id: 'local', email: '', name: 'User', role: 'admin', is_allowed: true });
   const [activeTab, setActiveTab] = useState('edgar');
   const [sharedPdf, setSharedPdf] = useState({
     fileId: null,
@@ -151,10 +144,7 @@ export default function App() {
     setTimeout(() => setToast(null), 4000);
   }, []);
 
-  useEffect(() => {
-    api.setUnauthorizedHandler(() => setUser(null));
-    return () => api.setUnauthorizedHandler(null);
-  }, []);
+  // Auth disabled — no unauthorized handler needed
 
   const handleAuthenticated = useCallback((data) => {
     const userInfo = {
